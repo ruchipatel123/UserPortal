@@ -4,8 +4,7 @@ import Button from "react-bootstrap/Button";
 
 import UserForm from "./UserForm";
 
-const UserTabel = ({user,fetchData}) => {
-
+const UserTabel = ({ user, fetchData }) => {
   return (
     <>
       <Container>
@@ -19,23 +18,21 @@ const UserTabel = ({user,fetchData}) => {
             </tr>
           </thead>
           <tbody>
-          {user.map(item => (
-                             <tr key={item.id}>
-                             <td>{item.id}</td>
-                             <td>{item.name}</td>
-                             <td>{item.email}</td>
-                             <td>
-                               <Button variant="primary">Update</Button>{" "}
-                               <Button variant="danger">Delete</Button>{" "}
-                             </td>
-                           </tr>
-                            ))} 
+            {user.map((item) => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>
+                  <Button variant="primary">Update</Button>{" "}
+                  <Button variant="danger">Delete</Button>{" "}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
-      
       </Container>
-      <UserForm fetchData={fetchData}/>
-  
+      <UserForm fetchData={fetchData} />
     </>
   );
 };
