@@ -18,7 +18,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <UserTabel user={user} fetchData={fetchData} />
+      <UserTabel user={user} fetchData={fetchData} setUser={setUser}/>
     </>
   );
 }

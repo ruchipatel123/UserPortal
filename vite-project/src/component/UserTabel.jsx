@@ -3,8 +3,21 @@ import Container from "react-bootstrap/esm/Container";
 import Button from "react-bootstrap/Button";
 
 import UserForm from "./UserForm";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-const UserTabel = ({ user, fetchData }) => {
+const UserTabel = ({ setUser, user, fetchData }) => {
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://jsonserver-ni0v.onrender.com/user/${id}`);
+      setUser(user.filter((item) => item.id !== id)); // Remove the deleted user from the local state
+      toast.success("User deleted successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("please check again");
+    }
+  };
+
   return (
     <>
       <Container>
@@ -24,8 +37,12 @@ const UserTabel = ({ user, fetchData }) => {
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>
-                  <Button variant="primary">Update</Button>{" "}
-                  <Button variant="danger">Delete</Button>{" "}
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}

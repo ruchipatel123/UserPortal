@@ -33,6 +33,8 @@ const UserForm = ({ fetchData }) => {
       handleClose();
       fetchData();
       toast.success("user created successfully");
+      setName("");
+      setEmail("");
     } catch (error) {
       console.log(error);
     }
