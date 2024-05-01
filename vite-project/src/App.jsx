@@ -8,7 +8,7 @@ function App() {
 
 
   const fetchData = async () => {
-    var response = await axios.get("http://localhost:3000/user");
+    var response = await axios.get("https://jsonserver-ni0v.onrender.com/user");
     setUser(response.data);
   };
 

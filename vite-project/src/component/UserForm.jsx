@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/esm/Container";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const UserForm = ({fetchData}) => {
   const [show, setShow] = useState(false);
 
@@ -27,9 +27,11 @@ const UserForm = ({fetchData}) => {
     try {
         var data ={name,email}
         console.log (data)
-        var response = await axios.post("http://localhost:3000/user",data);
+        var response = await axios.post("https://jsonserver-ni0v.onrender.com/user",data);
         handleClose();
-        fetchData()
+        fetchData();
+        toast.success("user created successfully")
+
 
     } catch (error) {
         console.log(error)
