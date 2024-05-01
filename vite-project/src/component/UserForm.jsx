@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/esm/Container";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import { toast } from "react-toastify";
-const UserForm = ({ fetchData }) => {
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+const UserForm = ({ show, fetchData, handleShow, handleClose, selectedUser, setselectedUser }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (selectedUser) {
+      setName(selectedUser.name);
+      setEmail(selectedUser.email);
+    } else {
+      setName("");
+      setEmail("");
+    }
+  }, [selectedUser]);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -24,17 +30,19 @@ const UserForm = ({ fetchData }) => {
 
   const handleSubmit = async () => {
     try {
-      var data = { name, email };
+      const data = { name, email };
       console.log(data);
-      var response = await axios.post(
-        "https://jsonserver-ni0v.onrender.com/user",
-        data
-      );
-      handleClose();
-      fetchData();
-      toast.success("user created successfully");
-      setName("");
-      setEmail("");
+      if (selectedUser) {
+        await axios.put(`https://jsonserver-ni0v.onrender.com/user/${selectedUser.id}`, data);
+        handleClose();
+        fetchData();
+        setselectedUser(null);
+      } else {
+        await axios.post("https://jsonserver-ni0v.onrender.com/user", data);
+        handleClose();
+        fetchData();
+      }
+      toast.success(selectedUser ? "User updated successfully" : "User created successfully");
     } catch (error) {
       console.log(error);
     }
@@ -44,12 +52,12 @@ const UserForm = ({ fetchData }) => {
     <div>
       <Container>
         <Button variant="primary" onClick={handleShow}>
-          Create User
+          {selectedUser ? "Edit User" : "Create User"}
         </Button>
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>{selectedUser ? "Edit User" : "Create User"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
